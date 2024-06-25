@@ -15,6 +15,7 @@ module Users
       }, status: :ok
     end
 
+    # rubocop:disable Metrics/MethodLength
     def respond_to_on_destroy
       if current_user
         render json: {
@@ -28,5 +29,6 @@ module Users
         }, status: :unauthorized
       end
     end
+    # rubocop:enable Metrics/MethodLength
   end
 end
