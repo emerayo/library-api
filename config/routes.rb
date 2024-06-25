@@ -12,4 +12,10 @@ Rails.application.routes.draw do
                        sessions: 'users/sessions',
                        registrations: 'users/registrations'
                      }
+
+  resources :books, only: %i[create index update destroy] do
+    collection do
+      get 'search'
+    end
+  end
 end
