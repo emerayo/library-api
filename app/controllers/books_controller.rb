@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class BooksController < ApplicationController
-  before_action :find_book, only: %i[update destroy]
+  before_action :authenticate_user!
+  before_action :find_and_authorize_book, only: %i[update destroy]
 
   has_scope :by_author
   has_scope :by_title
@@ -9,6 +10,8 @@ class BooksController < ApplicationController
 
   # GET /books
   def index
+    authorize! :read, Book
+
     @books = Book.all
 
     render json: serialize_list(@books)
@@ -16,6 +19,8 @@ class BooksController < ApplicationController
 
   # POST /books
   def create
+    authorize! :create, Book
+
     @book = Book.new(book_params)
 
     if @book.save
@@ -42,13 +47,16 @@ class BooksController < ApplicationController
 
   # GET /books
   def search
+    authorize! :search, Book
+
     @books = apply_scopes(Book).all
     render json: serialize_list(@books)
   end
 
   private
 
-  def find_book
+  def find_and_authorize_book
+    authorize! :manage, Book
     @book = Book.find(params[:id])
   end
 

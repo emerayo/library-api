@@ -44,6 +44,8 @@ gem 'devise'
 gem 'devise-jwt'
 gem 'jsonapi-serializer'
 
+gem 'cancancan'
+
 gem 'has_scope'
 
 group :development, :test do
