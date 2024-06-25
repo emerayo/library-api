@@ -5,6 +5,10 @@ require 'rails_helper'
 describe Book, type: :model do
   subject { build(:book) }
 
+  describe 'associations' do
+    it { should have_many(:book_borrows).dependent(:destroy) }
+  end
+
   describe 'validations' do
     it { is_expected.to validate_presence_of(:author) }
     it { is_expected.to validate_presence_of(:copies) }
