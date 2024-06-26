@@ -6,4 +6,6 @@ class BookBorrow < ApplicationRecord
 
   validates :due_date, :start_date, presence: true
   validates :returned, inclusion: [true, false]
+
+  validates :book_id, uniqueness: { scope: :user_id }
 end

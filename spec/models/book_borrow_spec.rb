@@ -13,6 +13,9 @@ describe BookBorrow, type: :model do
   describe 'validations' do
     it { is_expected.to validate_presence_of(:due_date) }
     it { is_expected.to validate_presence_of(:start_date) }
+
     it { is_expected.to validate_inclusion_of(:returned).in_array([true, false]) }
+
+    it { is_expected.to validate_uniqueness_of(:book_id).scoped_to(:user_id) }
   end
 end
