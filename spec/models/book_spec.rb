@@ -80,4 +80,104 @@ describe Book, type: :model do
       end
     end
   end
+
+  describe '#available_copies' do
+    let(:book) { create(:book, copies: 10) }
+
+    subject { book.available_copies }
+
+    context 'when there is no book borrow' do
+      it 'returns original copies number' do
+        expect(subject).to eq 10
+      end
+    end
+
+    context 'when there is at least one book borrow' do
+      context 'when the book was already returned' do
+        let!(:book_borrow) { create(:book_borrow, book: book, returned: true) }
+
+        it 'returns original copies number' do
+          expect(subject).to eq 10
+        end
+      end
+
+      context 'when the book was not returned' do
+        let!(:book_borrow) { create(:book_borrow, book: book, returned: false) }
+
+        it 'returns original copies less the amount of book borrow not returned' do
+          expect(subject).to eq 9
+        end
+      end
+    end
+  end
+
+  describe '#unreturned_books' do
+    let(:book) { create(:book, copies: 10) }
+
+    subject { book.unreturned_books }
+
+    context 'when there is no book borrow' do
+      it 'returns a blank relation' do
+        expect(subject).to eq []
+      end
+    end
+
+    context 'when there is at least one book borrow' do
+      context 'when the book was already returned' do
+        let!(:book_borrow) { create(:book_borrow, book: book, returned: true) }
+
+        it 'returns a blank relation' do
+          expect(subject).to eq []
+        end
+      end
+
+      context 'when the book was not returned' do
+        let!(:book_borrow) { create(:book_borrow, book: book, returned: false) }
+
+        it 'returns a relation with the book_borrow' do
+          expect(subject).to eq [book_borrow]
+        end
+      end
+    end
+  end
+
+  describe '#overdue_borrows' do
+    let(:book) { create(:book, copies: 10) }
+
+    subject { book.overdue_borrows }
+
+    context 'when there is no book borrow' do
+      it 'returns a blank relation' do
+        expect(subject).to eq []
+      end
+    end
+
+    context 'when there is at least one book borrow' do
+      context "when the book's due_date is tomorrow" do
+        let!(:book_borrow) do
+          create(:book_borrow, book: book, returned: true,
+                              start_date: 13.days.ago, due_date: 1.day.from_now)
+        end
+
+        it 'returns a blank relation' do
+          expect(subject).to eq []
+        end
+      end
+
+      context "when the book's due_date was yesterday" do
+        let!(:book_borrow) do
+          create(:book_borrow, book: book, returned: false,
+                               start_date: 15.days.ago, due_date: 1.day.ago)
+        end
+        let!(:borrow_returned) do
+          create(:book_borrow, book: book, returned: true,
+                               start_date: 15.days.ago, due_date: 1.day.ago)
+        end
+
+        it 'returns a relation with the not returned book_borrow' do
+          expect(subject).to eq [book_borrow]
+        end
+      end
+    end
+  end
 end
