@@ -13,6 +13,54 @@ describe BookBorrow, type: :model do
   describe 'validations' do
     it { is_expected.to validate_presence_of(:due_date) }
     it { is_expected.to validate_presence_of(:start_date) }
+    it {
+      is_expected.to validate_comparison_of(:due_date).is_equal_to(subject.start_date + 2.weeks)
+    }
+
     it { is_expected.to validate_inclusion_of(:returned).in_array([true, false]) }
+
+    it { is_expected.to validate_uniqueness_of(:book_id).scoped_to(:user_id) }
+  end
+
+  describe 'scopes' do
+    describe '#overdue' do
+      let(:book) { create(:book, copies: 10) }
+
+      subject { described_class.overdue }
+
+      context 'when there is no book borrow' do
+        it 'returns a blank relation' do
+          expect(subject).to eq []
+        end
+      end
+
+      context 'when there is at least one book borrow' do
+        context "when the book's due_date is tomorrow" do
+          let!(:book_borrow) do
+            create(:book_borrow, book: book, returned: true,
+                                 start_date: 13.days.ago, due_date: 1.day.from_now)
+          end
+
+          it 'returns a blank relation' do
+            expect(subject).to eq []
+          end
+        end
+
+        context "when the book's due_date was yesterday" do
+          let!(:book_borrow) do
+            create(:book_borrow, book: book, returned: false,
+                                 start_date: 15.days.ago, due_date: 1.day.ago)
+          end
+          let!(:borrow_returned) do
+            create(:book_borrow, book: book, returned: true,
+                                 start_date: 15.days.ago, due_date: 1.day.ago)
+          end
+
+          it 'returns a relation with the not returned book_borrow' do
+            expect(subject).to eq [book_borrow]
+          end
+        end
+      end
+    end
   end
 end

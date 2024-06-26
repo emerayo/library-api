@@ -9,6 +9,7 @@ class Ability
     elsif user.member?
       can :read, Book
       can :search, Book
+      can :create, BookBorrow
     end
   end
 end

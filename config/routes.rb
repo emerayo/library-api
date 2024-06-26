@@ -18,4 +18,6 @@ Rails.application.routes.draw do
       get 'search'
     end
   end
+
+  resources :book_borrows, only: %i[create update]
 end
