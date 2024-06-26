@@ -10,6 +10,10 @@ class Book < ApplicationRecord
   scope :by_title, ->(string) { where('title ILIKE ?', "%#{string}%") }
   scope :by_genre, ->(string) { where('genre ILIKE ?', "%#{string}%") }
 
+  def available?
+    available_copies.positive?
+  end
+
   def available_copies
     copies - unreturned_books.count
   end

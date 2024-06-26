@@ -6,6 +6,6 @@ FactoryBot.define do
     genre { Faker::Book.genre }
     isbn { Faker::Code.isbn }
     title { Faker::Book.title }
-    copies { rand(20) }
+    copies { rand(1..20) }
   end
 end
