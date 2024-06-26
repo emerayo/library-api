@@ -7,6 +7,7 @@ class Ability
     if user.librarian?
       can :manage, :all
     elsif user.member?
+      can :read, :dashboard
       can :read, Book
       can :search, Book
       can :create, BookBorrow
