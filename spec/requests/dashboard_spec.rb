@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'API BookBorrows' do
+describe 'API Dashboard' do
   include ApiHelper
 
   let(:user) { create(:user) }
