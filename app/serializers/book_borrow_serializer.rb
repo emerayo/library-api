@@ -3,5 +3,13 @@
 class BookBorrowSerializer
   include JSONAPI::Serializer
 
-  attributes :id, :due_date, :book_id, :returned, :start_date, :user_id
+  attributes :id, :book_id, :returned, :user_id
+
+  attribute :start_date do |record|
+    record.start_date&.strftime('%d/%m/%Y')
+  end
+
+  attribute :due_date do |record|
+    record.due_date&.strftime('%d/%m/%Y')
+  end
 end

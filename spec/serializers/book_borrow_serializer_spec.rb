@@ -13,8 +13,8 @@ describe BookBorrowSerializer, type: :model do
       expect(subject[:user_id]).to eq book_borrow.user_id
       expect(subject[:book_id]).to eq book_borrow.book_id
       expect(subject[:returned]).to eq book_borrow.returned
-      expect(subject[:due_date]).to eq book_borrow.due_date
-      expect(subject[:start_date]).to eq book_borrow.start_date
+      expect(subject[:due_date]).to eq book_borrow.due_date.strftime('%d/%m/%Y')
+      expect(subject[:start_date]).to eq book_borrow.start_date.strftime('%d/%m/%Y')
     end
   end
 end
