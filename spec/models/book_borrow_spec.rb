@@ -33,6 +33,34 @@ describe BookBorrow, type: :model do
       context 'when there is a copy available' do
         it { is_expected.to be_valid }
       end
+
+      context 'when the book does not exist' do
+        let(:new_record) { build(:book_borrow, book_id: 0) }
+
+        it { expect(new_record).to_not be_valid }
+      end
+    end
+
+    context 'user validation' do
+      subject { build(:book_borrow, user: user) }
+
+      context 'when user is a librarian' do
+        let!(:user) { create(:user, :librarian) }
+
+        it { expect(subject).to_not be_valid }
+      end
+
+      context 'when user is a member' do
+        let!(:user) { create(:user) }
+
+        it { is_expected.to be_valid }
+      end
+
+      context 'when the user does not exist' do
+        let(:new_record) { build(:book_borrow, user_id: 0) }
+
+        it { expect(new_record).to_not be_valid }
+      end
     end
   end
 
