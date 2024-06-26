@@ -156,7 +156,7 @@ describe Book, type: :model do
       context "when the book's due_date is tomorrow" do
         let!(:book_borrow) do
           create(:book_borrow, book: book, returned: true,
-                              start_date: 13.days.ago, due_date: 1.day.from_now)
+                               start_date: 13.days.ago, due_date: 1.day.from_now)
         end
 
         it 'returns a blank relation' do

@@ -13,7 +13,9 @@ describe BookBorrow, type: :model do
   describe 'validations' do
     it { is_expected.to validate_presence_of(:due_date) }
     it { is_expected.to validate_presence_of(:start_date) }
-    it { is_expected.to validate_comparison_of(:due_date).is_equal_to(subject.start_date + 2.weeks) }
+    it {
+      is_expected.to validate_comparison_of(:due_date).is_equal_to(subject.start_date + 2.weeks)
+    }
 
     it { is_expected.to validate_inclusion_of(:returned).in_array([true, false]) }
 
@@ -36,7 +38,7 @@ describe BookBorrow, type: :model do
         context "when the book's due_date is tomorrow" do
           let!(:book_borrow) do
             create(:book_borrow, book: book, returned: true,
-                   start_date: 13.days.ago, due_date: 1.day.from_now)
+                                 start_date: 13.days.ago, due_date: 1.day.from_now)
           end
 
           it 'returns a blank relation' do
