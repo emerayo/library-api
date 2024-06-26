@@ -9,6 +9,10 @@
 * PostgreSQL 14.0+
 * Ruby 3.2.2
 
+## API Documentation
+
+API Documentation can be found in [API.md](./API.md).
+
 ## Setup
 
 Copy the `sample.env` file:
