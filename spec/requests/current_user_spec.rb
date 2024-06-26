@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'API Books' do
+describe 'API CurrentUser' do
   include ApiHelper
 
   let(:json_response) { response.parsed_body }
