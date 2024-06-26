@@ -56,6 +56,17 @@ describe 'API BookBorrows' do
     end
 
     context 'when user is librarian' do
+      let(:member) { create(:user) }
+      let(:valid_params) do
+        {
+          book_borrow: {
+            user_id: member.id,
+            book_id: book.id,
+            due_date: '25-06-2024',
+            start_date: '11-06-2024'
+          }
+        }
+      end
       let(:user) { create(:user, :librarian) }
 
       context 'with valid params' do

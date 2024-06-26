@@ -320,7 +320,7 @@ Status code: 200 - OK
 
 #### Example response, when user is a Librarian but resource does not exist:
 
-Status code: 401 - Unauthorized
+Status code: 404 - Not found
 
 ```json
 {
@@ -355,7 +355,7 @@ Status code: 204 - No content
 
 #### Example response, when user is a Librarian but resource does not exist:
 
-Status code: 401 - Unauthorized
+Status code: 404 - Not found
 
 ```json
 {
@@ -458,7 +458,7 @@ Status code: 200 - OK
 
 #### Example response, when user is a Librarian but resource does not exist:
 
-Status code: 401 - Unauthorized
+Status code: 404 - Not found
 
 ```json
 {

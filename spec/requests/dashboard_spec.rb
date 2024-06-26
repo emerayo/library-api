@@ -63,9 +63,10 @@ describe 'API Dashboard' do
 
     context 'when user is librarian' do
       let(:user) { create(:user, :librarian) }
+      let(:member) { create(:user) }
 
       context 'when a member has at least one BookBorrow but no overdue borrows' do
-        let!(:book_borrow) { create(:book_borrow, book: book, user: user) }
+        let!(:book_borrow) { create(:book_borrow, book: book, user: member) }
 
         it 'returns the total_books, total_borrowed as 1' do
           subject
@@ -80,7 +81,7 @@ describe 'API Dashboard' do
 
       context 'when a member has at least one BookBorrow and has overdue borrows' do
         let!(:book_borrow) do
-          create(:book_borrow, book: book, returned: false, user: user,
+          create(:book_borrow, book: book, returned: false, user: member,
                                start_date: 15.days.ago, due_date: 1.day.ago)
         end
 
@@ -92,13 +93,13 @@ describe 'API Dashboard' do
           expect(json_response['total_books']).to eq 1
           expect(json_response['total_borrowed']).to eq 1
           expect(json_response['borrowed_due_today']).to eq([])
-          expect(json_response['users_with_overdue_books']).to eq([{ 'email' => user.email }])
+          expect(json_response['users_with_overdue_books']).to eq([{ 'email' => member.email }])
         end
       end
 
       context 'when a member has at least one BookBorrow and is due today' do
         let!(:book_borrow) do
-          create(:book_borrow, book: book, returned: false, user: user,
+          create(:book_borrow, book: book, returned: false, user: member,
                                start_date: 14.days.ago, due_date: Time.zone.today)
         end
 

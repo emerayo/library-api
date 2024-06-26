@@ -11,6 +11,7 @@ class BookBorrow < ApplicationRecord
   validates :book_id, uniqueness: { scope: :user_id }
 
   validate :available_book, if: :book_id?
+  validate :user_is_member, if: :user_id?
 
   scope :overdue, -> { where(due_date: ...Time.zone.today, returned: false) }
 
@@ -23,8 +24,14 @@ class BookBorrow < ApplicationRecord
   end
 
   def available_book
-    return if book.available?
+    return if book.nil? || book.available?
 
     errors.add(:book_id, 'No available copies at the moment')
+  end
+
+  def user_is_member
+    return if user.nil? || user.member?
+
+    errors.add(:user_id, 'Only members can borrow books')
   end
 end
