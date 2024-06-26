@@ -30,7 +30,7 @@ class BooksController < ApplicationController
     end
   end
 
-  # PATCH/PUT /books/1/edit
+  # PATCH/PUT /books/1
   def update
     if @book.update(book_params)
       render json: serialize(@book)
