@@ -10,11 +10,19 @@ class BookBorrow < ApplicationRecord
 
   validates :book_id, uniqueness: { scope: :user_id }
 
+  validate :available_book, if: :book_id?
+
   scope :overdue, -> { where(due_date: ...Time.zone.today, returned: false) }
 
   private
 
   def valid_due_date
     start_date + 2.weeks
+  end
+
+  def available_book
+    return if book.available?
+
+    errors.add(:book_id, 'No available copies at the moment')
   end
 end

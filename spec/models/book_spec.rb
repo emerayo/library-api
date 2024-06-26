@@ -81,6 +81,36 @@ describe Book, type: :model do
     end
   end
 
+  describe '#available?' do
+    let(:book) { create(:book, copies: 1) }
+
+    subject { book.available? }
+
+    context 'when there is no book borrow' do
+      it 'returns original copies number' do
+        expect(subject).to eq true
+      end
+    end
+
+    context 'when there is at least one book borrow' do
+      context 'when the book was already returned' do
+        let!(:book_borrow) { create(:book_borrow, book: book, returned: true) }
+
+        it 'returns original copies number' do
+          expect(subject).to eq true
+        end
+      end
+
+      context 'when the book was not returned' do
+        let!(:book_borrow) { create(:book_borrow, book: book, returned: false) }
+
+        it 'returns original copies less the amount of book borrow not returned' do
+          expect(subject).to eq false
+        end
+      end
+    end
+  end
+
   describe '#available_copies' do
     let(:book) { create(:book, copies: 10) }
 

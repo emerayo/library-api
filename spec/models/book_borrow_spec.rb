@@ -20,6 +20,20 @@ describe BookBorrow, type: :model do
     it { is_expected.to validate_inclusion_of(:returned).in_array([true, false]) }
 
     it { is_expected.to validate_uniqueness_of(:book_id).scoped_to(:user_id) }
+
+    context 'book availability' do
+      context 'when there is no copy available' do
+        let(:book) { create(:book, copies: 1) }
+        let!(:book_borrow) { create(:book_borrow, book: book) }
+        let(:new_record) { build(:book_borrow, book: book) }
+
+        it { expect(new_record).to_not be_valid }
+      end
+
+      context 'when there is a copy available' do
+        it { is_expected.to be_valid }
+      end
+    end
   end
 
   describe 'scopes' do

@@ -46,8 +46,4 @@ class BookBorrowsController < ApplicationController
   def serialize(book_borrow)
     BookBorrowSerializer.new(book_borrow).serializable_hash[:data][:attributes]
   end
-
-  def serialize_list(list)
-    BookBorrowSerializer.new(list).serializable_hash[:data].pluck(:attributes)
-  end
 end
