@@ -11,8 +11,11 @@ describe 'User' do
       let(:user) { create(:user) }
 
       it { is_expected.not_to be_able_to(:manage, Book) }
+      it { is_expected.not_to be_able_to(:update, BookBorrow) }
+
       it { is_expected.to be_able_to(:read, Book) }
       it { is_expected.to be_able_to(:search, Book) }
+      it { is_expected.to be_able_to(:create, BookBorrow) }
     end
 
     context 'when user is librarian' do
