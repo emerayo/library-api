@@ -36,6 +36,10 @@ describe BookBorrow, type: :model do
     end
   end
 
+  describe 'delegations' do
+    it { should delegate_method(:email).to(:user).with_prefix }
+  end
+
   describe 'scopes' do
     describe '#overdue' do
       let(:book) { create(:book, copies: 10) }

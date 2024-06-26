@@ -14,6 +14,8 @@ class BookBorrow < ApplicationRecord
 
   scope :overdue, -> { where(due_date: ...Time.zone.today, returned: false) }
 
+  delegate :email, to: :user, prefix: true
+
   private
 
   def valid_due_date
